@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CategoriaService {
     
-    public List<Categoria> getCategorias(boolean activos);
+    public List<Categoria> getCategorias(Categoria activos);
     
     public Categoria getCategoria(Categoria categoria);
     public void save(Categoria categoria);

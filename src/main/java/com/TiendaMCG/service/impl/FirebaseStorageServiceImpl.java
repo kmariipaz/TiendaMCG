@@ -6,9 +6,12 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.Storae.SignUrlOption;
 import com.google.cloud.storage.StorageOptions;
-import com.TiendaMCG.service.FirebaseStorageService;
+import static com.TiendaMCG.service.FirebaseStorageService.BucketName;
+import static com.TiendaMCG.service.FirebaseStorageService.archivoJsonFile;
+import static com.TiendaMCG.service.FirebaseStorageService.rutaJsonFile;
+import static com.TiendaMCG.service.FirebaseStorageService.rutaSuperiorStorage;
+import com.google.cloud.storage.Storage.SignUrlOption;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,7 +30,7 @@ public class FirebaseStorageServiceImpl implemets FirebaseStorageService {
             String extension = archivoLocalCliente.getOriginalFilename();
             String fileName = "img" + sacaNumero(id) + extension;
             File file = this.convertToFile(archivoLocalCliente);
-            String IRL = this.uploadFile(file, carpeta, fileName);
+            String URL = this.uploadFile(file, carpeta, fileName);
             file.delete();
             
             return URL;
@@ -46,7 +49,7 @@ public class FirebaseStorageServiceImpl implemets FirebaseStorageService {
         Credentials credentials = GoogleCredentials.fromStream(json.getInputStream());
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-        String url = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS, SignUrlOption.signWwith((ServiceAccountSigner) credentials)).toString();
+        String url = storage.signUrl(blobInfo, 3650, TimeUnit.DAYS, SignUrlOption.signWith((ServiceAccountSigner) credentials)).toString();
         return url;
     }
     
